@@ -3,10 +3,11 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        {% block stylesheets %}<link rel="stylesheet" href="build/app.css">{% endblock %}
     </head>
     <body>
+        {% block header %}{% include "navbar.html.twig" %}{% endblock %}
         {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        {% block javascript %}<script src="build/app.js"></script>{% endblock %}
     </body>
 </html>

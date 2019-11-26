@@ -1,0 +1,17 @@
+// Your variable overrides
+$body-bg: blue;
+$body-color: black;
+$theme-colors: (
+  "custom-color": white
+);
+
+// Bootstrap and its default variables
+@import "node_modules/bootstrap/scss/bootstrap";
+
+// the ~ allows you to reference things in node_modules
+@import "~bootstrap/scss/bootstrap";
+
+body {
+    font-family: Verdana, sans-serif; 
+    font-size: 150%;
+}
