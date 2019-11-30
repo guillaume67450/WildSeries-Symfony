@@ -1,12 +1,10 @@
 // Your variable overrides
-$body-bg: blue;
-$body-color: black;
+$body-bg: black;
+$body-color: white;
 $theme-colors: (
-  "custom-color": white
+  "custom-color": red,
 );
 
-// Bootstrap and its default variables
-@import "node_modules/bootstrap/scss/bootstrap";
 
 // the ~ allows you to reference things in node_modules
 @import "~bootstrap/scss/bootstrap";

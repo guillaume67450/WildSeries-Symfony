@@ -6,10 +6,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/** @Route("/wild", name="wild") */
 Class WildController extends AbstractController
 {
     /**
-     * @Route("/wild", name="wild_index")
+     * @Route("/", name="index")
     */
     public function index() :Response
     {
@@ -19,50 +20,25 @@ Class WildController extends AbstractController
     }
 
     /**
-    * @Route("/wild/show/{slug<^[a-z0-9-]+$>}",
-    *     defaults={"slug"=null},
-    *     name="wild_show"
-    * )
-     * 
-     * slug wcs
+     * @Route("/show/{slug}",
+     *   requirements={"slug"="[a-z0-9-]*"})
+     *   name="show"
+     * )
      */
     public function show($slug) :Response
     {   
+        $nothing = "Aucune série sélectionnée, veuillez choisir une série";
+        $title = $nothing;
+
+        if ($slug) {
+            $title = ucwords(str_replace('-',' ',$slug));
+        }
+        
         return $this->render('wild/show.html.twig',
         [ 
-        'titre' => $slug
+            'titre' => $title
         ]
         );
     }
-
-/*
-    static public function slugify($text)
-    {
-        // replace non letter or digits by -
-        $text = preg_replace('~[^\\pL\d]+~u', '-', $text);
-    
-        // trim
-        $text = trim($text, '-');
-    
-        // transliterate
-        if (function_exists('iconv'))
-        {
-            $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
-        }
-    
-        // lowercase
-        $text = strtolower($text);
-    
-        // remove unwanted characters
-        $text = preg_replace('~[^-\w]+~', '', $text);
-    
-        if (empty($text))
-        {
-            return 'n-a';
-        }
-    
-        return $text;
-    }
-*/
 
 }

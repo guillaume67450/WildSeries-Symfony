@@ -11,7 +11,7 @@ require('../css/app.scss');
 // Need jQuery? Install it with "yarn add jquery", then uncomment to require it.
 // const $ = require('jquery');
 
-document.write('Hello Webpack Encore! Edit me in assets/js/app.js');
+//document.write('Hello Webpack Encore! Edit me in assets/js/app.js');
 
 // app.js
 
@@ -26,4 +26,5 @@ require('bootstrap');
 
 $(document).ready(function() {
     $('[data-toggle="popover"]').popover();
+    console.log("test");
 });
