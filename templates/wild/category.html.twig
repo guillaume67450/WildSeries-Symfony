@@ -1,16 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}All programs{% endblock %}
+{% block title %} 3 programmes de la catégorie {{ category }}{% endblock %}
 
 {% block body %}
-    <h1>Toutes les séries de la table program : </h1>
+    <h1> 3 programes de la catégorie : {{ category }} </h1>
+    <br/>
     {% for program in programs %}
         <div>
-            <h2>{{ loop.index }} / {{ program.title }} - Catégorie : {{ program.category.name }}</h2>
+            <h3>{{ loop.index }} / {{ program.title }} - Catégorie : {{ program.category.name }}</h3>
             <p>{{ program.summary }}</p>
         </div>
     {% else %}
-        Aucune série trouvée.
+        No program !
     {% endfor %}
     <a href="{{ path('app_index') }}">
         Retour à l'accueil
