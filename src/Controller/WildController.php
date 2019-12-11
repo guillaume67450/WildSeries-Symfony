@@ -7,6 +7,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Program;
 use App\Entity\Category;
+use App\Entity\Season;
+use App\Entity\Episode;
 
 /** @Route("/wild", name="wild_") */
 Class WildController extends AbstractController
@@ -54,6 +56,8 @@ Class WildController extends AbstractController
             );
         }
 
+        var_dump($program);
+
         return $this->render('wild/show.html.twig', [
             'program' => $program,
             'slug'  => $slug,
@@ -91,7 +95,80 @@ Class WildController extends AbstractController
         ]);
 
     }
-/*
+
+     /**
+     * Getting a season from a program
+     *
+     * @Route("/season/{id}", name="show_season")
+     */
+    public function showBySeason(int $id):Response
+    {
+        if (!$id) {
+        throw $this
+        ->createNotFoundException('No season has been sent to find this season.');
+        }
+
+
+        $season = $this->getDoctrine()->getRepository(Season::class)->find($id);
+
+        return $this->render(
+            'wild/season.html.twig', [
+            'program' => $season->getProgram(),
+            'episodes' => $season->getEpisodes(),
+            'season' => $season,
+        ]);
+    }
+
+    /**
+     * Getting all seasons from a program
+     *
+     * @Route("/programSeasons/{id}", name="show_seasons")
+     */
+    public function showProgramSeasons(Program $program):Response
+    {
+        if (!$program) {
+        throw $this
+        ->createNotFoundException('No season has been sent to find this season.');
+        }
+
+
+        $seasons = $program->getSeasons();
+        dump($seasons);
+        return $this->render(
+            'wild/seasons.html.twig', [
+            'program' => $program,
+            'seasons' => $seasons,
+        ]);
+    }
+
+    /**
+     * Getting an episode from a season
+     *
+     * @Route("/episode/{id}", name="show_episode")
+     */
+    public function showByEpisode(int $id):Response
+    {
+        if (!$id) {
+            throw $this
+                ->createNotFoundException('No episode has been sent to find the episod.');
+        }
+
+        $episode = $this->getDoctrine()->getRepository(Episode::class)->find($id);
+        //$season = $this->getDoctrine()->getRepository(Season::class)->find($season_id);
+        $season = $episode->getSeasonId();
+        dump($season);
+        //dump($season->getProgram());
+
+        return $this->render(
+            'wild/episode.html.twig', [
+            'program' => $season->getProgram(),
+            'episode' => $episode,
+            'season' => $episode->getSeasonId(),
+        ]);
+    }
+
+    
+
     /**
      * @Route("/show/{slug}",
      *   requirements={"slug"="[a-z0-9-]*"})
@@ -116,5 +193,6 @@ Class WildController extends AbstractController
     }
     */
 
-    
+
+
 }

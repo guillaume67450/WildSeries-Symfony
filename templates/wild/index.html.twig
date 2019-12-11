@@ -6,14 +6,16 @@
     <h1>Toutes les séries de la table program : </h1>
     {% for program in programs %}
         <div>
+            <a href="{{ path('wild_show_seasons', {'id': program.id }) }}">
             <h2>{{ loop.index }} / {{ program.title }} - Catégorie : {{ program.category.name }}</h2>
+            </a>
             <p>{{ program.summary }}</p>
         </div>
     {% else %}
         Aucune série trouvée.
     {% endfor %}
     <a href="{{ path('app_index') }}">
-        Retour à l'accueil
+        <p>Retour à l'accueil</p>
     </a>
 {% endblock %}
 

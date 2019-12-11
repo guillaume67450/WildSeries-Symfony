@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} La série {{ program.title }} saison n° {{ season.number }} {% endblock %}
+
+{% block body %}
+    <h1> La série : {{ program.title }} </h1>
+    <br/>
+        <div>
+            <h3> Saison : {{ season.number }} </h3>
+            <p> {{ season.description }} </p>
+            
+            <h2>Episodes :</h2>
+            {% for episode in episodes %}
+                <div>
+                    <a href= {{ path('wild_show_episode', { id: episode.id }) }} > {{ episode.number }} / {{ episode.title }} </a>
+                </div>
+            {% else %}
+                Aucune série trouvée.
+            {% endfor %}
+        </div>
+
+    <a href="{{ path('wild_show_seasons', {'id': program.id }) }}">
+        <p>Retour à la liste des saisons</p>
+    </a>
+    <a href="{{ path('app_index') }}">
+        <p>Retour à l'accueil</p>
+    </a>
+{% endblock %}
+

@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}All seasons from program{% endblock %}
+
+{% block body %}
+    <h1>Toutes les saison de la série : {{ program.title }}</h1>
+    {% for season in seasons %}
+        <div>
+            <a href="{{ path('wild_show_season', {'id': season.id }) }}">
+            <h2>Saison : {{ season.number }} / Année : {{ season.year }} </h2>
+            </a>
+            <p>{{ season.description }}</p>
+        </div>
+    {% else %}
+        Aucune saison trouvée.
+    {% endfor %}
+
+    <a href="{{ path('wild_index') }}">
+        <p>Retour à la liste des séries</p>
+    </a>
+    <a href="{{ path('app_index') }}">
+        <p>Retour à l'accueil</p>
+    </a>
+{% endblock %}
+
