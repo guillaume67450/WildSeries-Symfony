@@ -21,6 +21,7 @@ La méthode getEpisodes() est utilisée dans WildController au niveau de la mét
 La méthode getEpisodes() est utilisée dans WildController au niveau de la méthode showBySeason(), pour récupérer les épisodes.
 
 Quête 10 :
+https://www.loom.com/share/3c475b4ffdf445969234f729ce1c452d
 
 Critères de validation :
 
