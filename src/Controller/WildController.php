@@ -146,24 +146,20 @@ Class WildController extends AbstractController
      *
      * @Route("/episode/{id}", name="show_episode")
      */
-    public function showByEpisode(int $id):Response
+    public function showEpisode(Episode $episode):Response
     {
-        if (!$id) {
+        if (!$episode) {
             throw $this
                 ->createNotFoundException('No episode has been sent to find the episod.');
         }
 
-        $episode = $this->getDoctrine()->getRepository(Episode::class)->find($id);
-        //$season = $this->getDoctrine()->getRepository(Season::class)->find($season_id);
         $season = $episode->getSeasonId();
-        dump($season);
-        //dump($season->getProgram());
 
         return $this->render(
             'wild/episode.html.twig', [
             'program' => $season->getProgram(),
             'episode' => $episode,
-            'season' => $episode->getSeasonId(),
+            'season' => $episode->getSeasonId(), // note : c'est mon nom d'objet où il y a un ID en trop, mais l'objet fait bien référence à Season
         ]);
     }
 
