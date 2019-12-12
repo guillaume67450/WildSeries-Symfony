@@ -3,7 +3,7 @@
 {% block title %}All seasons from program{% endblock %}
 
 {% block body %}
-    <h1>Toutes les saison de la série : {{ program.title }}</h1>
+    <h1>Toutes les saisons de la série : {{ program.title }}</h1>
     {% for season in seasons %}
         <div>
             <a href="{{ path('wild_show_season', {'id': season.id }) }}">
@@ -14,6 +14,9 @@
     {% else %}
         Aucune saison trouvée.
     {% endfor %}
+
+    <h2>Descriptif de la série :</h2>
+    <p> {{ program.summary }} </p>
 
     <a href="{{ path('wild_index') }}">
         <p>Retour à la liste des séries</p>

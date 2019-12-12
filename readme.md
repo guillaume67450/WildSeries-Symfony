@@ -17,3 +17,24 @@ Les méthodes getProgram() et setProgram()sont présentes dans l'entité Season,
 Les méthodes getSeason() et setSetSeason()sont présentes dans l'entité Episode, comme demandé dans le challenge,
 La méthode getProgram() est utilisée dans WildController au niveau de la méthode showBySeason(), pour récupérer la série associée à la saison affichée.
 La méthode getEpisodes() est utilisée dans WildController au niveau de la méthode showBySeason(), pour récupérer les épisodes.
+
+La méthode getEpisodes() est utilisée dans WildController au niveau de la méthode showBySeason(), pour récupérer les épisodes.
+
+Quête 10 :
+
+Critères de validation :
+
+•
+Dans WildController, la méthode showEpisode() permet de récupérer un objet episode via le param converter, à partir de l’id * en paramètre de route,
+
+•
+Dans showEpisode(), la saison et la série associées à l’épisode sont toujours récupérées par l’appel à $episode->getSeason(); et $season->getProgram,
+
+•
+La méthode rend une vue affichant le nom de la série, ses infos, ainsi qu’un lien vers la page de détails de la saison et un lien vers la page détails du programme associé.
+
+•
+Le code est disponible sur un repository GitHub, avec une branche correspondant à cette quête.
+
+•
+La fonctionnalité est démontrée via une vidéo dont le lien est ajouté au README.md
