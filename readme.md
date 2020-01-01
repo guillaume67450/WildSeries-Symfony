@@ -44,3 +44,7 @@ Quête 11 :
 
 lien de la vidéo :
 https://www.loom.com/share/5edc8abd98fd4bfba266cf0115bd5852
+
+Quête 12 :
+lien de la vidéo :
+https://www.loom.com/share/27a1593337ac42298526f0d5b81d4932
