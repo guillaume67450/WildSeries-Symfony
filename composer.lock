@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "25e96ff4379254d82207cf6bd21ac6eb",
+    "content-hash": "90dbea8699214e09b84efbf5f5aacbc0",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -3743,7 +3743,7 @@
         },
         {
             "name": "symfony/options-resolver",
-            "version": "v4.4.0",
+            "version": "v4.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/options-resolver.git",

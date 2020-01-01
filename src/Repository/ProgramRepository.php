@@ -47,4 +47,32 @@ class ProgramRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function searchByTitle($value)
+    {   
+        $programs = $this->createQueryBuilder('p')
+            ->where('p.title = :val')
+            ->setParameter('val', '%'.$value.'%')
+            ->getQuery()
+            ->getResult()
+        ;
+        var_dump($programs);
+        return $programs;
+        
+        /*$programs = $this->getEntityManager()
+            ->createQuery('SELECT p FROM App\Entity\Program p WHERE p.title LIKE :val')
+            ->setParameter('val', '%'.$value.'%')
+            ->getResult()
+        ;
+        var_dump($programs);
+        return $programs;*/
+
+        /*$conn = $this->getEntityManager()->getConnection();
+        $sql = 'SELECT * FROM program p WHERE p.title LIKE :val';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['val' => '%'.$value.'%']);
+        $programs = $stmt->fetchAll();
+        var_dump($programs);
+        return $programs;*/
+    }
 }
