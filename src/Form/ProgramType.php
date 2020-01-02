@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Actor;
 use App\Entity\Program;
 use App\Entity\Category;
 use Symfony\Component\Form\AbstractType;
@@ -26,6 +27,14 @@ class ProgramType extends AbstractType
                 // used to render a select box, check boxes or radios
                 // 'multiple' => true,
                 // 'expanded' => true,
+            ])
+            ->add('actors', EntityType::class, [
+                'class' => Actor::class,
+                'choice_label' => 'name',
+                'expanded' => 'true',
+                'multiple' => 'true',
+                // on utilise le by reference car on n'est pas du côté propriétaire et doctrine utilise une méthode 'lazy'
+                'by_reference' => false,
             ])
         ;
     }
