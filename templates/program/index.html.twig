@@ -12,6 +12,7 @@
                 <th>Title</th>
                 <th>Summary</th>
                 <th>Poster</th>
+                <th>Saisons</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -21,10 +22,11 @@
                 <td>{{ program.id }}</td>
                 <td>{{ program.title }}</td>
                 <td>{{ program.summary }}</td>
-                <td>{{ program.poster }}</td>
+                <td><img alt="lorem_image" title="image_serie_lorem {{ program.poster }}" width="200" height="300" src="{{ program.poster }}"> </td>
                 <td>
-                    <a href="{{ path('program_show', {'id': program.id}) }}">show</a>
-                    <a href="{{ path('program_edit', {'id': program.id}) }}">edit</a>
+                    <a href="{{ path('program_show', {'slug': program.slug}) }}">show</a>
+                    <a href="{{ path('program_edit', {'slug': program.slug}) }}">edit</a><br>
+                    <a href="{{ path('show_program_seasons', {'id': program.id}) }}">voir les saisons</a>
                 </td>
             </tr>
         {% else %}

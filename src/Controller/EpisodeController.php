@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Episode;
 use App\Form\EpisodeType;
+use App\Repository\EpisodeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,14 +18,10 @@ class EpisodeController extends AbstractController
     /**
      * @Route("/", name="episode_index", methods={"GET"})
      */
-    public function index(): Response
+    public function index(EpisodeRepository $episodeRepository): Response
     {
-        $episodes = $this->getDoctrine()
-            ->getRepository(Episode::class)
-            ->findAll();
-
         return $this->render('episode/index.html.twig', [
-            'episodes' => $episodes,
+            'episodes' => $episodeRepository->findAll(),
         ]);
     }
 
@@ -52,7 +49,7 @@ class EpisodeController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="episode_show", methods={"GET"})
+     * @Route("/{slug}", name="episode_show", methods={"GET"})
      */
     public function show(Episode $episode): Response
     {
@@ -62,7 +59,7 @@ class EpisodeController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="episode_edit", methods={"GET","POST"})
+     * @Route("/{slug}/edit", name="episode_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Episode $episode): Response
     {

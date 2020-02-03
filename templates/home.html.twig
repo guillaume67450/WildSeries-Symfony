@@ -1,16 +1,63 @@
-{% extends "base.html.twig" %}
+{% extends 'base.html.twig' %}
 
-{% block title %}Document{% endblock %}
+{% block title %}Categories{% endblock %}
 
-{% block body %}<h1>{{ "Bienvenue !" }}</h1>
+{% block body %}
 
-<a href="{{ path('wild_show', { 'slug': "walking-dead" }) }}">
-    Testing show() method from WildController with a real program s slug.
-</a>
-<br>
-<a href="{{ path('wild_index') }}">
-    Testing index() method from WildController to view all programs.
-</a>
+    <div class="jumbotron jumbotron-fluid"> 
+        <div class="container text-center">
+            <h2 class="display-3 text-primary">Wild Series</h2>
+        </div>
+    </div>
+
+<div class="container-fluid h-100">
+  <div class="row h-100">
+    <aside class="col-12 col-md-2 p-0 bg-dark">
+      <nav class="navbar navbar-expand navbar-dark bg-dark flex-md-column flex-row align-items-start">
+        <div class="collapse navbar-collapse">
+          <ul class="flex-md-column flex-row navbar-nav w-100 justify-content-between">
+            <h3 class="text-light">Séries par catégorie :</h3>
+            {% for category in categories %}
+            <li class="nav-item">
+               <a class="nav-link pl-0" href="{{ path('category_show', {'id': category.id}) }}">{{ category.name }}</a>
+            </li>
+            {% else %}
+            No category !
+            {% endfor %}  
+            <li class="nav-item">  
+                <a href="{{ path('app_index') }}">
+                Retour à l'accueil
+                </a> 
+            </li>      
+          </ul>
+        </div>
+      </nav>
+    </aside>
+    <main class="col">
+      <!-- Insérez ici le contenu principal du site ou de l'application -->
+      	<div class="container">
+		
+		<h1>Les Séries</h1>
+
+		<div class="row my-3">
+			{% if programs is defined %}
+				{% for program in programs %}
+					<div class="col-4 col-sm-3 my-3 my-sm-0">
+						<div class="card">
+							<div class="position-relative">
+								<a href="{{ path('program_show', {'slug': program.slug}) }}"><img src="{{ program.poster }}" class="card-img-top" alt="{{ program.title }}"></a>
+								<!--div class="card-img-overlay d-flex justify-content-end align-items-end">
+								</div-->
+							</div>
+            </div>
+          </div>
+        {% endfor %}
+      {% endif %}
+        <div>
+    </main>
+
+  </div>
+</div>
+
 
 {% endblock %}
-

@@ -1,79 +1,55 @@
 <?php
-// src/Controller/WildController.php
+
 namespace App\Controller;
 
+use App\Entity\Actor;
+use App\Entity\Category;
+use App\Entity\Episode;
+use App\Entity\Program;
+use App\Entity\Season;
+use App\Services\SlugifyService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Entity\Program;
-use App\Entity\Category;
-use App\Entity\Season;
-use App\Entity\Episode;
-use Symfony\Component\HttpFoundation\Request;
-use App\Form\ProgramSearchType;
 
-
-
-
-
-/** @Route("/wild", name="wild_") */
+/**
+ * @Route("/wild", name="wild_")
+ */
 class WildController extends AbstractController
 {
     /**
      * @Route("/", name="index")
-     * @return Response A response instance
+     * @return Response
      */
-    public function index(Request $request): Response
+    public function index(): Response
     {
-        
 
-        $form = $this->createForm(ProgramSearchType::class);
-        $form->handleRequest($request);
+        $programs = $this->getDoctrine()
+            ->getRepository(Program::class)
+            ->findAll();
 
-        if ($form->isSubmitted()) {
-            $data = $form->getData();
-            // $data contains $_POST data
-            // TODO : Faire une recherche dans la BDD avec les infos de $data…
-            $repo = $this->getDoctrine()
-                ->getRepository(Program::class);
-            $programs = $repo->searchByTitle($data['searchField']);
-
-            // $entityManager = $this->getDoctrine()->getManager();
-            // $entityManager->persist($task);
-            // $entityManager->flush();
-        
-            return $this->render(
-                'wild/index.html.twig',
-                [
-                    'programs' => $programs,
-                    'form' => $form->createView(),
-                ]
+        if (!$programs) {
+            throw $this->createNotFoundException(
+                'No program found in program\'s table.'
             );
- 
-        } else {
-            $programs = $this->getDoctrine()->getRepository(Program::class)->findAll();
-
-            if (!$programs) {
-                throw $this->createNotFoundException('No program found in Program\'s table.');
-            }
         }
+        $slugs = SlugifyService::multiSlugify($programs);
 
         return $this->render(
             'wild/index.html.twig',
             [
                 'programs' => $programs,
-                'form' => $form->createView()
+                'slugs' => $slugs,
             ]
         );
     }
 
-
-
     /**
-     * Getting a program with a formatted slug for title
-     *
      * @param string $slug The slugger
-     * @Route("/show/{slug<^[a-z0-9-]+$>}", defaults={"slug" = null}, name="show")
+     * @Route("/show/{slug<^[a-z0-9-]+$>}",
+     *     name="show",
+     *     defaults={"slug"=null},
+     *  )
      * @return Response
      */
     public function show(?string $slug): Response
@@ -82,11 +58,11 @@ class WildController extends AbstractController
             throw $this
                 ->createNotFoundException('No slug has been sent to find a program in program\'s table.');
         }
-        $slug = preg_replace(
-            '/-/',
-            ' ',
-            ucwords(trim(strip_tags($slug)), "-")
-        );
+        if ($slug == null) {
+            $slug = "Aucune série sélectionnée, veuillez choisir une série";
+        } else {
+            $slug = SlugifyService::unslugify($slug);
+        }
         $program = $this->getDoctrine()
             ->getRepository(Program::class)
             ->findOneBy(['title' => mb_strtolower($slug)]);
@@ -96,143 +72,131 @@ class WildController extends AbstractController
             );
         }
 
-        var_dump($program);
-
         return $this->render('wild/show.html.twig', [
             'program' => $program,
-            'slug'  => $slug,
+            'slug' => $slug,
         ]);
     }
 
-
     /**
-     * Getting all programs from a category
-     *
-     * @param string $categoryName The Category
-     * @Route("/category/{categoryName}", name="show_category")
+     * @param string $categoryName
+     * @Route("/showByCategory/{categoryName<^[A-Za-z0-9-]+$>}",
+     *     name="showByCategory",
+     *     defaults={"categoryName"=null},
+     *  )
      * @return Response
      */
-    public function showByCategory(string $categoryName): Response
+    public function showByCategory(?string $categoryName): Response
     {
-        if (!$categoryName) {
-            throw $this
-                ->createNotFoundException('No category has been sent to find the programs.');
+        $category = $this->getDoctrine()
+            ->getRepository(Category::class)
+            ->findOneBy(['name' => strtolower($categoryName)]);
+        if (!$category) {
+            throw $this->createNotFoundException(
+                'No category with ' . $categoryName . ' name, found in category\'s table.'
+            );
         }
+        $programs = $this->getDoctrine()
+            ->getRepository(Program::class)
+            ->findBy(['category' => $category->getId()],
+                ['id' => 'DESC'],
+                3
+            );
 
-        $category = $this->getDoctrine()->getRepository(Category::class)->findOneBy(['name' => strtolower($categoryName)]);
+        $slugs = SlugifyService::multiSlugify($programs);
 
-        $programs = $this->getDoctrine()->getRepository(Program::class)->findBy(
-            ['Category' => $category->getId()],
-            ['id' => 'desc'],
-            3,
-            0
-        );
+        return $this->render('wild/showByCategory.html.twig', [
+            'category' => $categoryName,
+            'programs' => $programs,
+            'slugs' => $slugs,
+        ]);
+    }
 
-        return $this->render(
-            'wild/category.html.twig',
+    /**
+     * @param string $slug The slugger
+     * @Route("/showByProgram/{slug<^[a-z0-9-]+$>}",
+     *     name="showByProgram",
+     *     defaults={"slug"=null},
+     *  )
+     * @return Response
+     */
+    public function showByProgram(?string $slug): Response
+    {
+        if (!$slug) {
+            throw $this
+                ->createNotFoundException('No slug has been sent to find a program in program\'s table.');
+        }
+        if ($slug == null) {
+            $slug = "Aucune série sélectionnée, veuillez choisir une série";
+        } else {
+            $slug = SlugifyService::unslugify($slug);
+        }
+        $program = $this->getDoctrine()
+            ->getRepository(Program::class)
+            ->findOneBy(['title' => mb_strtolower($slug)]);
+        if (!$program) {
+            throw $this->createNotFoundException(
+                'No program with ' . $slug . ' title, found in program\'s table.'
+            );
+        }
+        return $this->render('wild/showByProgram.html.twig',
             [
-                'category' => $category->getName(),
-                'programs' => $programs,
+                'program' => $program,
+                'slug' => $slug,
             ]
         );
     }
 
     /**
-     * Getting a season from a program
-     *
-     * @Route("/season/{id}", name="show_season")
+     * @param integer $id
+     * @Route("/showBySeason/{id<\d+>}",
+     *     name="showBySeason",
+     *  )
+     * @return Response
      */
     public function showBySeason(int $id): Response
     {
         if (!$id) {
             throw $this
-                ->createNotFoundException('No season has been sent to find this season.');
+                ->createNotFoundException('No id has been sent to find a season in season\'s table.');
         }
 
+        $season = $this->getDoctrine()
+            ->getRepository(Season::class)
+            ->find($id);
+        if (!$season) {
+            throw $this->createNotFoundException(
+                'No season with ' . $id . ' number, found in season\'s table.'
+            );
+        }
 
-        $season = $this->getDoctrine()->getRepository(Season::class)->find($id);
+        $slug = SlugifyService::slugify($season->getProgram()->getTitle());
 
-        return $this->render(
-            'wild/season.html.twig',
+        return $this->render('wild/showBySeason.html.twig',
             [
-                'program' => $season->getProgram(),
-                'episodes' => $season->getEpisodes(),
                 'season' => $season,
+                'slug' => $slug,
             ]
         );
     }
 
     /**
-     * Getting all seasons from a program
-     *
-     * @Route("/programSeasons/{id}", name="show_seasons")
-     */
-    public function showProgramSeasons(Program $program): Response
-    {
-        if (!$program) {
-            throw $this
-                ->createNotFoundException('No season has been sent to find this season.');
-        }
-
-
-        $seasons = $program->getSeasons();
-        dump($seasons);
-        return $this->render(
-            'wild/seasons.html.twig',
-            [
-                'program' => $program,
-                'seasons' => $seasons,
-            ]
-        );
-    }
-
-    /**
-     * Getting an episode from a season
-     *
-     * @Route("/episode/{id}", name="show_episode")
+     * @param integer $id
+     * @Route("/showEpisode/{slug}", name="showEpisode")
      */
     public function showEpisode(Episode $episode): Response
     {
-        if (!$episode) {
-            throw $this
-                ->createNotFoundException('No episode has been sent to find the episod.');
-        }
-
         $season = $episode->getSeasonId();
+        $program = $season->getProgram();
 
-        return $this->render(
-            'wild/episode.html.twig',
+        $slug = SlugifyService::slugify($program->getTitle());
+
+        return $this->render('wild/showEpisode.html.twig',
             [
-                'program' => $season->getProgram(),
                 'episode' => $episode,
-                'season' => $episode->getSeasonId(), // note : c'est mon nom d'objet où il y a un ID en trop, mais l'objet fait bien référence à Season
-            ]
-        );
+                'program' => $program,
+                'season' => $season,
+                'slug' => $slug,
+            ]);
     }
-
-
-
-    /**
-     * @Route("/show/{slug}",
-     *   requirements={"slug"="[a-z0-9-]*"})
-     *   name="show"
-     * )
-     */
-    /*
-    public function show($slug) :Response
-    {   
-        $nothing = "Aucune série sélectionnée, veuillez choisir une série";
-        $title = $nothing;
-
-        if ($slug) {
-            $title = ucwords(str_replace('-',' ',$slug));
-        }
-        
-        return $this->render('wild/show.html.twig',
-        [ 
-            'titre' => $title
-        ]
-        );
-    }
-    */
 }

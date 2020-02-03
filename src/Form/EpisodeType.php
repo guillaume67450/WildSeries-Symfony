@@ -17,7 +17,7 @@ class EpisodeType extends AbstractType
             ->add('title')
             ->add('number')
             ->add('synopsis')
-            ->add('season_id', EntityType::class, [
+            ->add('season', EntityType::class, [
                 // looks for choices from this entity
                 'class' => Season::class,
                 // uses the Season.number property as the visible option string

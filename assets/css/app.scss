@@ -13,3 +13,11 @@ body {
     font-family: Verdana, sans-serif; 
     font-size: 150%;
 }
+
+.jumbotron {
+  background-image: url('../images/series.jpg');
+  color: black;
+  background-size: cover;
+  background-repeat: no-repeat;
+  text-align: center;
+}

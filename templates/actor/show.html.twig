@@ -3,16 +3,18 @@
 {% block title %}Acteur{% endblock %}
 
 {% block body %}
-    <h1>Acteur {{ actor.name }}</h1>
+    <h1 pb-3>Acteur {{ actor.name }}</h1>
+
+    <strong> ses séries : </strong>
 
             {% for program in actor.programs %}
-                <li><a href="{{ path('program_show', {'id': program.id}) }}">{{ program.title }}</a> </li>
+                <li><a href="{{ path('program_show', {'slug': program.slug}) }}">{{ program.title }}</a> </li>
             {% else %}
                 <li>Aucun acteur pour cette série</li>
             {% endfor %}
             </ul>
 
 
-    <a href="{{ path('wild_index') }}">retour à l'index des séries</a>
+    <a href="{{ path('actor_index') }}">retour à la liste des acteurs</a>
 
 {% endblock %}

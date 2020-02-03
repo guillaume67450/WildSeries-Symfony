@@ -1,16 +1,17 @@
 <?php
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use App\Entity\Program;
-use App\Entity\Category;
 use App\Entity\Season;
 use App\Entity\Episode;
-use Symfony\Component\HttpFoundation\Request;
+use App\Entity\Program;
+use App\Entity\Category;
 use App\Form\CategoryType;
+use App\Repository\ProgramRepository;
 use App\Repository\CategoryRepository;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class CategoryController extends AbstractController
 {
@@ -28,6 +29,23 @@ class CategoryController extends AbstractController
                 'categories' => $categoryRepository->findAll(),
             ]
         );
+    }
+
+    /**
+     * @Route("category/{id}", name="category_show", methods={"GET"})
+     */
+    public function show(Category $category): Response
+    {
+        $programs = $this->getDoctrine()
+        ->getRepository(Program::class)
+        ->findBy(['Category' => $category->getId()],
+            ['title' => 'ASC']
+        );
+
+        return $this->render('category/show.html.twig', [
+            'category' => $category,
+            'programs' => $programs
+        ]);
     }
 
     /**

@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Episode{% endblock %}
+
+{% block body %}
+
+    <h4 class="text-warning">Les séries de la catégorie </h4><h2 class="text-danger"> {{ category.name }} </h2>
+    
+    <div class="row my-3">
+        {% for program in programs %}
+            <div class="col-6 col-sm-4 col-md-3 my-3 my-sm-0">
+                <div class="card">
+                    <div class="position-relative">
+                    <a href="{{ path('program_show', {'slug': program.slug}) }}">
+                        <img src="{{ program.poster }}" class="card-img-top" alt="{{ program.title }}">
+                    </div>
+                    <div class="card-body text-center">
+                        <h5 class="card-title">
+                            <a href={{ path('program_show', {'slug': program.slug}) }}>
+                            <strong> {{ program.title }} </strong>
+                        </h5>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+
+    <a href="{{ path('app_index') }}">back to homepage</a>
+
+    {# <a href="{{ path('category_edit', {'id': category.id}) }}">edit</a>  
+
+    pas besoin d'éditer ou supprimer la catégorie pour le moment
+
+    {{ include('episode/_delete_form.html.twig') }} #}
+{% endblock %}
