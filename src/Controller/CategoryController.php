@@ -21,8 +21,6 @@ class CategoryController extends AbstractController
      */
     public function indexFormCategory(CategoryRepository $categoryRepository): Response
     {
-
-
         return $this->render(
             'wild/categories.html.twig',
             [
