@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Comment{% endblock %}
+
+{% block body %}
+    <h1>Comment</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ comment.id }}</td>
+            </tr>
+            <tr>
+                <th>Titre de l'épisode</th>
+                <td>{{ comment.episode.title }}</td>
+            </tr>
+            <tr>
+                <th>Utilisateur</th>
+                <td>{{ comment.author.email }}</td>
+            </tr>
+            <tr>
+                <th>Commentaire</th>
+                <td>{{ comment.comment }}</td>
+            </tr>
+            <tr>
+                <th>Note</th>
+                <td>{{ comment.rate }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('comment_index') }}">back to list</a>
+
+    <a href="{{ path('episode_show', {'slug': comment.episode.slug }) }}">back to episode</a>
+
+    <a href="{{ path('comment_edit', {'id': comment.id}) }}">edit</a>
+
+    {{ include('comment/_delete_form.html.twig') }}
+{% endblock %}

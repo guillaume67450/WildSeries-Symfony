@@ -42,7 +42,7 @@ class ProgramController extends AbstractController
             $program->setSlug($slugifyService->generate($program->getTitle()));
             $entityManager->persist($program);
             $entityManager->flush();
-
+            
             $email = (new Email())
                 ->from($this->getParameter('mailer_from'))
                 ->to($this->getParameter('mailer_to'))

@@ -2,11 +2,8 @@
 namespace App\DataFixtures;
 
 use Faker;
-use Faker\Factory;
 use App\Entity\Season;
 use App\Entity\Episode;
-use App\Entity\Program;
-use Faker\Provider\Lorem;
 use App\Services\SlugifyService;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;

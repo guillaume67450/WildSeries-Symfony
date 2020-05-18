@@ -68,3 +68,7 @@ https://www.loom.com/share/2fec904658474135aa48847cf9475300
 Quête 17 :
 lien de la vidéo :
 https://www.loom.com/share/2271a5fd40a0424abde71b93c74f890a
+
+Quête 19 :
+https://www.loom.com/share/7b160811d35d40949d899f17c57e6744
+
