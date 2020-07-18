@@ -33,6 +33,8 @@ class ProgramController extends AbstractController
      */
     public function new(Request $request, SlugifyService $slugifyService, MailerInterface $mailer): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'User tried to access a page without having ROLE_ADMIN');
+
         $program = new Program();
         $form = $this->createForm(ProgramType::class, $program);
         $form->handleRequest($request);
@@ -99,6 +101,8 @@ class ProgramController extends AbstractController
      */
     public function delete(Request $request, Program $program): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'User tried to access a page without having ROLE_ADMIN');
+
         if ($this->isCsrfTokenValid('delete' . $program->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($program);

@@ -25,14 +25,15 @@
             </tr>
             <tr>
                 <th>Voir les épisodes</th>
-                <td>{{ season.description }}</td>
+                <td><a href="{{ path('season_show', {'id': season.id}) }}">fonctionnalité à venir</a></td>
             </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('season_index') }}">back to list</a>
-
+    <a href="{{ path('app_index') }}">back to home</a>
+{% if is_granted('ROLE_ADMIN') %}
     <a href="{{ path('season_edit', {'id': season.id}) }}">edit</a>
 
     {{ include('season/_delete_form.html.twig') }}
+{% endif %}
 {% endblock %}

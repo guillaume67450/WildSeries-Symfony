@@ -34,7 +34,9 @@
 
     <a href="{{ path('episode_show', {'slug': comment.episode.slug }) }}">back to episode</a>
 
+{% if (is_granted('ROLE_ADMIN')) or (comment.author.id == app.user.id) %}
     <a href="{{ path('comment_edit', {'id': comment.id}) }}">edit</a>
 
     {{ include('comment/_delete_form.html.twig') }}
+{% endif %}
 {% endblock %}

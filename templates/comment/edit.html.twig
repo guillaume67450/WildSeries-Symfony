@@ -8,6 +8,7 @@
     {{ include('comment/_form.html.twig', {'button_label': 'Update'}) }}
 
     <a href="{{ path('comment_index') }}">back to list</a>
-
+{% if (is_granted('ROLE_ADMIN')) %}
     {{ include('comment/_delete_form.html.twig') }}
+{% endif %}
 {% endblock %}

@@ -11,6 +11,7 @@ use App\Repository\CategoryRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class CategoryController extends AbstractController
@@ -48,6 +49,7 @@ class CategoryController extends AbstractController
 
     /**
      * @Route("/category/add", name="category_add")
+     * @IsGranted("ROLE_ADMIN")
      */
     public function insert(Request $request) : Response
     {

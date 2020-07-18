@@ -3,6 +3,7 @@
 {% block title %}Program index{% endblock %}
 
 {% block body %}
+<div class="container-fluid">
     <h1>Program index</h1>
 
     <table class="table">
@@ -25,7 +26,9 @@
                 <td><img alt="lorem_image" title="image_serie_lorem {{ program.poster }}" width="200" height="300" src="{{ program.poster }}"> </td>
                 <td>
                     <a href="{{ path('program_show', {'slug': program.slug}) }}">show</a>
+                {% if is_granted('ROLE_ADMIN') %}
                     <a href="{{ path('program_edit', {'slug': program.slug}) }}">edit</a><br>
+                {% endif %}
                     <a href="{{ path('show_program_seasons', {'id': program.id}) }}">voir les saisons</a>
                 </td>
             </tr>
@@ -36,6 +39,8 @@
         {% endfor %}
         </tbody>
     </table>
-
+{% if is_granted('ROLE_ADMIN') %}
     <a href="{{ path('program_new') }}">Create new</a>
+{% endif %}
+</div>
 {% endblock %}

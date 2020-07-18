@@ -3,6 +3,7 @@
 {% block title %}Episode index{% endblock %}
 
 {% block body %}
+<div class="container-fluid">
     <h1>Episode index</h1>
 
     <table class="table">
@@ -24,7 +25,9 @@
                 <td>{{ episode.synopsis }}</td>
                 <td>
                     <a href="{{ path('episode_show', {'slug': episode.slug}) }}">show</a>
+                {% if is_granted('ROLE_ADMIN') %}
                     <a href="{{ path('episode_edit', {'slug': episode.slug}) }}">edit</a>
+                {% endif %}
                 </td>
             </tr>                    
         {% else %}
@@ -35,5 +38,8 @@
         </tbody>
     </table>
 
+{% if is_granted('ROLE_ADMIN') %}
     <a href="{{ path('episode_new') }}">Create new</a>
+{% endif %}
+</div>
 {% endblock %}

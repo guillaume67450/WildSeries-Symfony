@@ -1,5 +1,4 @@
 <nav class="navbar navbar-expand-sm navbar-light bg-light">
-    <a class="navbar-brand" href="#">Navbar</a>
     <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
         aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -8,29 +7,29 @@
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
             <div class="row">
                     
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">Home</a>
+                    <li class="d-inline nav-item text-nowrap">
+                    
+                        <a class="nav-link" href="/"><i class="fa fa-home"></i> Home</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('program_index') }}">Séries</a>
+                    <li class="d-inline nav-item text-nowrap">
+                        <a class="nav-link" href="{{ path('program_index') }}"><i class="fas fa-file-video"></i> Séries</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('actor_index') }}">Acteurs</a>
+                    <li class="d-inline nav-item text-nowrap">        
+                        <a class="nav-link" href="{{ path('actor_index') }}"><i class="fas fa-user-secret"></i> Acteurs</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('episode_index') }}">Episodes</a>
+                    <li class="d-inline nav-item text-nowrap">
+                        <a class="nav-link" href="{{ path('episode_index') }}"><i class="fab fa-d-and-d"></i> Episodes</a>
                     </li>
                 {% if app.user %}
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_logout') }}"> Se déconnecter</a>
+                    <li class="d-inline nav-item text-nowrap">
+                        <a class="nav-link" href="{{ path('app_logout') }}"><i class="fas fa-lock-open"></i> Se déconnecter</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link alert-success" href="{#{ path('profile') }#}">({{ app.user.email }})</a>
+                    <li class="d-inline nav-item text-nowrap">
+                        <a class="nav-link alert-success" href="#{#{ path('profile') }#}"><i class="fa fa-picture-o"></i> {{ app.user.email }}</a>
                     </li>
                 {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_login') }}"> Se connecter</a>
+                    <li class="d-inline nav-item text-nowrap">
+                        <a class="nav-link" href="{{ path('app_login') }}"><i class="fa fa-lock"></i> Se connecter</a>
                     </li>
                 {% endif %}
             </div>

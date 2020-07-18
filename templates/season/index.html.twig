@@ -19,14 +19,16 @@
         <tbody>
         {% for season in seasons %}
             <tr>
-                <td> {{ program.id }} </td>
+                <td>{{ program.id }}</td>
                 <td>{{ season.id }}</td>
                 <td>{{ season.number }}</td>
                 <td>{{ season.year }}</td>
                 <td>{{ season.description }}</td>
                 <td>
                     <a href="{{ path('season_show', {'id': season.id}) }}">show</a>
+                {% if is_granted('ROLE_ADMIN') %}
                     <a href="{{ path('season_edit', {'id': season.id}) }}">edit</a>
+                {% endif %}
                 </td>
             </tr>
         {% else %}
@@ -37,5 +39,7 @@
         </tbody>
     </table>
 
+{% if is_granted('ROLE_ADMIN') %}
     <a href="{{ path('season_new') }}">Create new</a>
+{% endif %}
 {% endblock %}
