@@ -75,4 +75,26 @@ class ProgramRepository extends ServiceEntityRepository
         var_dump($programs);
         return $programs;*/
     }
+
+    public function findAllWithCategories()
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->innerJoin('p.Category', 'c' )
+            ->addSelect('c')
+            ->getQuery();
+
+        return $qb->execute();
+    }
+
+    public function findAllWithCategoriesAndActor()
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->innerJoin('p.Category', 'c' )
+            ->innerJoin('p.actors', 'a' )
+            ->addSelect('c')
+            ->addSelect('a')
+            ->getQuery();
+
+        return $qb->execute();
+    }
 }

@@ -7,10 +7,15 @@ use App\Entity\Category;
 use App\Entity\Episode;
 use App\Entity\Program;
 use App\Entity\Season;
+use App\Form\CategoryType;
 use App\Services\SlugifyService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
+use App\Repository\ProgramRepository;
+
+
 
 /**
  * @Route("/wild", name="wild_")
@@ -21,28 +26,31 @@ class WildController extends AbstractController
      * @Route("/", name="index")
      * @return Response
      */
-    public function index(): Response
-    {
-
-        $programs = $this->getDoctrine()
-            ->getRepository(Program::class)
-            ->findAll();
-
-        if (!$programs) {
-            throw $this->createNotFoundException(
-                'No program found in program\'s table.'
-            );
-        }
-        $slugs = SlugifyService::multiSlugify($programs);
-
-        return $this->render(
-            'wild/index.html.twig',
-            [
-                'programs' => $programs,
-                'slugs' => $slugs,
-            ]
-        );
-    }
+     public function index(Request $request, ProgramRepository $programRepository) :Response
+     {
+         $programs = $this->getDoctrine()->getRepository(Program::class)->findAll();
+ 
+         if(!$programs) {
+             throw $this->createNotFoundException('No program found in program\'s table.');
+         }
+ 
+         $category = new Category();
+         $form = $this->createForm(CategoryType::class, $category);
+         $form->handleRequest($request);
+ 
+         if ($form->isSubmitted()) {
+              $categoryManager = $this->getDoctrine()->getManager();
+             $categoryManager->persist($category);
+             $categoryManager->flush();
+ 
+             return $this->redirectToRoute('wild_index');
+         }
+ 
+         return $this->render('wild/index.html.twig', [
+             'programs' => $programRepository->findAllWithCategoriesAndActor(),
+             'form' => $form->createView(),
+         ]);
+     }
 
     /**
      * @param string $slug The slugger
