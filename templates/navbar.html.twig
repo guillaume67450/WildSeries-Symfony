@@ -25,7 +25,7 @@
                         <a class="nav-link" href="{{ path('app_logout') }}"><i class="fas fa-lock-open"></i> Se déconnecter</a>
                     </li>
                     <li class="d-inline nav-item text-nowrap">
-                        <a class="nav-link alert-success" href="#{#{ path('profile') }#}"><i class="fa fa-picture-o"></i> {{ app.user.email }}</a>
+                        <a class="nav-link alert-success" href="{{ path('profile') }}"><i class="fa fa-picture-o"></i> {{ app.user.email }}</a>
                     </li>
                 {% else %}
                     <li class="d-inline nav-item text-nowrap">
@@ -36,3 +36,9 @@
         </ul>
     </div>
 </nav>
+<!-- on affiche en dessous de la barre de navigation les messages flash d'avertissement s'il y en a-->
+{% for message in app.flashes('warning') %}
+    <div class="alert alert-warning">
+        {{ message }}
+    </div>
+{% endfor %}

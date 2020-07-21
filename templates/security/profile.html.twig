@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Page de {{ user.email}}{% endblock %}
+
+{% block body %}
+<div class="container">
+   <p>Profil de : </p><h1  class="pb-5">{{user.email}}</h1>
+   <h2 class="pb-5">Voici votre page utilisateur, où figureront vos informations !</h2> 
+
+   <a name="accueil" id="accueil" class="btn btn-primary" href="/" role="button">Retour accueil</a>
+  
+</div>
+
+
+
+{% endblock %}
